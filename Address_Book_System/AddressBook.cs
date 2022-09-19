@@ -8,8 +8,13 @@ namespace Address_Book_System
 {
     class AddressBook
     {
-        public static List<NewMember> contactList = new List<NewMember>();
-        public static void AddaPerson()
+        public List<NewMember> contactList;
+
+        public AddressBook()
+        {
+            contactList = new List<NewMember>();
+        }
+        public void AddaPerson()
         {
             NewMember newMember = new NewMember();
             Console.Write("Enter First Name: ");
@@ -27,6 +32,8 @@ namespace Address_Book_System
             Console.Write("Enter Pincode: ");
             newMember.pincode = Console.ReadLine();
             contactList.Add(newMember);
+            newMember.emailId = Console.ReadLine();
+            contactList.Add(newMember);
         }
         public static void PrintPerson(NewMember member)
         {
@@ -37,11 +44,12 @@ namespace Address_Book_System
             Console.WriteLine("City: " + member.City);
             Console.WriteLine("State: " + member.State);
             Console.WriteLine("Pincode: " + member.pincode);
+            Console.WriteLine("Email Id: " + member.emailId);
             Console.WriteLine("");
 
         }
 
-        public static void Modify()
+        public void Modify()
         {
             if (contactList.Count > 0)
             {
@@ -61,7 +69,8 @@ namespace Address_Book_System
                             Console.WriteLine("Enter 5 to Change City ");
                             Console.WriteLine("Enter 6 to Change State ");
                             Console.WriteLine("Enter 7 to Change Pincode ");
-                            Console.WriteLine("Enter 8 to Exit ");
+                            Console.WriteLine("Enter 8 to Change Email Id ");
+                            Console.WriteLine("Enter 9 to Exit ");
                             int option = Convert.ToInt32(Console.ReadLine());
                             switch (option)
                             {
@@ -94,13 +103,13 @@ namespace Address_Book_System
                                     member.pincode = Console.ReadLine();
                                     break;
                                 case 8:
+                                    Console.WriteLine("Enter the New Email Id: ");
+                                    member.emailId = Console.ReadLine();
+                                    break;
+                                case 9:
                                     return;
                             }
                         }
-                    }
-                    else
-                    {
-                        Console.WriteLine("Please enter the valid name!");
                     }
                 }
             }
@@ -109,7 +118,7 @@ namespace Address_Book_System
                 Console.WriteLine("Your Address Book is empty!");
             }
         }
-        public static void DeleteDetails()
+        public void DeleteDetails()
         {
             if (contactList.Count > 0)
             {
@@ -123,10 +132,6 @@ namespace Address_Book_System
                         Console.WriteLine("Deleted Contact : " + member.firstname);
                         break;
                     }
-                    else
-                    {
-                        Console.WriteLine("Not Available.");
-                    }
                 }
             }
             else
@@ -135,7 +140,7 @@ namespace Address_Book_System
             }
         }
 
-        public static void ListContactPeople()
+        public void ListContactPeople()
         {
             if (contactList.Count > 0)
             {
