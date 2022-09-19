@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Address_Book_System
 {
@@ -7,6 +8,15 @@ namespace Address_Book_System
     {
         //Declared Dictionary
         public static Dictionary<string, List<NewMember>> addressbooknames = new Dictionary<string, List<NewMember>>();
+        public static Dictionary<string, List<NewMember>> cities = new Dictionary<string, List<NewMember>>();
+        public static Dictionary<string, List<NewMember>> states = new Dictionary<string, List<NewMember>>();
+        public static List<NewMember> cityname;
+        public static List<NewMember> statename;
+        public Program()
+        {
+            cityname = new List<NewMember>();
+            statename = new List<NewMember>();
+        }
         static void Main(string[] args)
         {
 
@@ -48,6 +58,8 @@ namespace Address_Book_System
                     Console.WriteLine(" ");
                     addressBook.ListContactPeople();
                 }
+
+
                 if (addressbooknames.ContainsKey(addressbookname))
                 {
                     Console.WriteLine("Existing address book name : {0} . Please retry!", addressbookname);
@@ -55,14 +67,18 @@ namespace Address_Book_System
                 }
                 else
                 {
+
                     ///adding details to the dictionary
                     addressbooknames.Add(addressbookname, addressBook.contactList);
                 }
+
+
                 noofbooksadded++;
             }
-            //using keyvalue to get value of the key.
             Console.WriteLine("Enter 1 to search the contacts based on city name and state");
-            if (Console.ReadLine() == "1")
+            Console.WriteLine("Enter 2 to print contact list based on city name and states");
+            string options = Console.ReadLine();
+            if (options == "1")
             {
                 Console.WriteLine("Enter City name");
                 string cityname = Console.ReadLine();
@@ -76,7 +92,110 @@ namespace Address_Book_System
                     AddressBook.Search(kvp.Value, cityname, state);
                 }
             }
+            else if (options == "2")
+            {
+                //print the data based on city name using group by and lambda function
+                AddressBook address = new AddressBook();
+                foreach (KeyValuePair<string, List<NewMember>> kvp in addressbooknames)
+                {
+                    var result = kvp.Value.GroupBy(mem => mem.City.ToLower());
+                    if (result != null)
+                    {
+                        foreach (var val in result)
+                        {
+                            foreach (NewMember member in val)
+                            {
+                                if (cities.ContainsKey(member.City.ToLower()))
+                                {
+                                    foreach (KeyValuePair<string, List<NewMember>> key in cities)
+                                    {
+                                        if (key.Key.ToLower() == member.City.ToLower())
+                                        {
+                                            key.Value.Add(member);
 
+                                        }
+                                    }
+
+                                }
+                                else
+                                {
+                                    Program program = new Program();
+                                    cityname.Add(member);
+                                    cities.Add(member.City.ToLower(), cityname);
+
+                                }
+                            }
+                        }
+
+
+                    }
+                    else
+                    {
+                        Console.WriteLine("No Contacts");
+                    }
+
+                }
+                //uses lambda function to group by state and add it to the dictionary
+                foreach (KeyValuePair<string, List<NewMember>> kvp in addressbooknames)
+                {
+                    var result = kvp.Value.GroupBy(mem => mem.State.ToLower());
+                    if (result != null)
+                    {
+                        foreach (var val in result)
+                        {
+                            foreach (NewMember member in val)
+                            {
+                                if (states.ContainsKey(member.State.ToLower()))
+                                {
+                                    foreach (KeyValuePair<string, List<NewMember>> key in states)
+                                    {
+                                        if (key.Key.ToLower() == member.State.ToLower())
+                                        {
+                                            key.Value.Add(member);
+
+                                        }
+                                    }
+
+                                }
+                                else
+                                {
+                                    Program program = new Program();
+                                    statename.Add(member);
+                                    states.Add(member.State.ToLower(), statename);
+
+                                }
+                            }
+                        }
+
+                    }
+                    else
+                    {
+                        Console.WriteLine("No Contacts");
+                    }
+                }
+                PrintDictionaries(cities, "City");
+                Console.WriteLine("   ");
+                PrintDictionaries(states, "States");
+
+            }
         }
+        //print state and country dictionaries
+        public static void PrintDictionaries(Dictionary<string, List<NewMember>> temp, string group)
+        {
+            AddressBook addressbook = new AddressBook();
+            Console.WriteLine("**** Printing the entire contact in the address book grouped by {0}", group);
+            foreach (KeyValuePair<string, List<NewMember>> kvp in temp)
+            {
+                Console.WriteLine(" ");
+                Console.WriteLine("The Contacts in the {0} {1}", group, char.ToUpper(kvp.Key[0]) + kvp.Key.Substring(1));
+                foreach (var member in kvp.Value)
+                {
+                    addressbook.PrintPerson(member);
+                }
+            }
+        }
+
+
+
     }
 }
