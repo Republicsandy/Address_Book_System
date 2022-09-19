@@ -62,7 +62,7 @@ namespace Address_Book_System
             }
             return found;
         }
-        public static void PrintPerson(NewMember member)
+        public void PrintPerson(NewMember member)
         {
             Console.WriteLine("First Name: " + member.firstname);
             Console.WriteLine("Last Name: " + member.lastname);
@@ -163,6 +163,24 @@ namespace Address_Book_System
             {
                 Console.WriteLine("Your Address book is empty!");
             }
+        }
+        public static void Search(List<NewMember> list, string cityname, string state)
+        {
+            AddressBook addressbook = new AddressBook();
+            var member = list.FindAll(x => (x.City.ToLower() == cityname || x.State.ToLower() == state));
+            if (member.Count > 0)
+            {
+                foreach (var members in member)
+                {
+                    addressbook.PrintPerson(members);
+
+                }
+            }
+            else
+            {
+                Console.WriteLine("No contacts present");
+            }
+
         }
 
         public void ListContactPeople()
