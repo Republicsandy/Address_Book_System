@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 
 namespace Address_Book_System
 {
@@ -78,6 +79,8 @@ namespace Address_Book_System
             Console.WriteLine("Enter 1 to search the contacts based on city name and state");
             Console.WriteLine("Enter 2 to print contact list based on city name and states");
             Console.WriteLine("Enter 3 to print contact list based on sorting contacts");
+            Console.WriteLine("Enter 4 to write contact list into the file");
+            Console.WriteLine("Enter 5 to read from a csv file");
             string options = Console.ReadLine();
             if (options == "1")
             {
@@ -203,6 +206,16 @@ namespace Address_Book_System
                 {
                     addressBook.SortBasedOnPinCode(addressbooknames);
                 }
+
+            }
+            else if (options == "4")
+            {
+                Console.WriteLine("Write to the file");
+                IOOperation.GetDictionary(addressbooknames);
+            }
+            else if (options == "5")
+            {
+
             }
         }
         //print state and country dictionaries
