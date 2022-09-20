@@ -3,6 +3,7 @@ using MailChimp.Net.Core.Responses;
 using Microsoft.PowerShell.Commands;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
+using NUnit.Framework;
 using RestSharp;
 using System.Collections.Generic;
 using System.Net;
@@ -75,6 +76,25 @@ namespace UnitTest
             Assert.AreEqual(6, result.Count);
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
 
+        }
+        //this method updates the first name
+        [TestMethod]
+        public void Test_Method_To_Update()
+        {
+
+            //put is used to modify existing details based on given id
+            RestRequest request = new RestRequest("/contacts/6", Method.PUT);
+            JsonObject json = new JsonObject();
+            json.Add("firstname", "Tyle");
+            json.Add("lastname", "Devika");
+            json.Add("emailId", "ramyapriyadevi@gmail.com");
+            json.Add("Phonenumber", "7784541454");
+            json.Add("Address", "Menod");
+            json.Add("State", "Karnataka");
+            request.AddJsonBody(json);
+            IRestResponse response = client.Execute(request);
+            var result = JsonConvert.DeserializeObject<NewMember>(response.Content);
+            Assert.AreEqual(result.firstname, "Tyle");
         }
     }
 }
