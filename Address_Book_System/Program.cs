@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AddressBookSystem;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
@@ -215,7 +216,8 @@ namespace Address_Book_System
             }
             else if (options == "5")
             {
-
+                Console.WriteLine("Written to csv file");
+                IOOperation.CSVOperations(addressbooknames);
             }
         }
         //print state and country dictionaries
