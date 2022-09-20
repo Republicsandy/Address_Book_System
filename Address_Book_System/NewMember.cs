@@ -48,5 +48,11 @@ namespace Address_Book_System
             get;
             set;
         }
+
+        public override string ToString()
+        {
+            return "Name: " + this.firstname + this.lastname + " ,Address: " + this.Address + "  ,City: " + this.City + " ,State: " + this.State + " ,Pincode: " + this.pincode + " ,phonenumber: " + this.phonenumber + " ,emailId: " + this.emailId;
+        }
+
     }
 }
