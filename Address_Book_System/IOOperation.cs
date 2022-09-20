@@ -1,12 +1,14 @@
 ﻿using Address_Book_System;
 using CsvHelper;
 using CsvHelper.Configuration;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Formats.Asn1;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace AddressBookSystem
@@ -104,7 +106,29 @@ namespace AddressBookSystem
 
             }
 
-
+            //Json serialze to add object to json file
+            string jsonFilepath = @"E:\Bridgelabz\Address_Book_System\Address_Book_System\AddressBook.json";
+            JsonSerializer serializer = new JsonSerializer();
+            List<NewMember> list = new List<NewMember>();
+            using (StreamWriter sw = new StreamWriter(jsonFilepath))
+            using (JsonWriter writer = new JsonTextWriter(sw))
+            {
+                //serializer to serialize to json
+                serializer.Serialize(writer, records);
+            }
+            Console.WriteLine("Written to JSON");
+            //Reading from json file
+            List<NewMember> json = JsonConvert.DeserializeObject<List<NewMember>>(File.ReadAllText(jsonFilepath));
+            foreach (var member in json)
+            {
+                //To remove header in Json file
+                if (member.firstname == "firstname")
+                {
+                    Console.WriteLine(" ");
+                    continue;
+                }
+                Console.WriteLine(member.ToString());
+            }
 
         }
     }
