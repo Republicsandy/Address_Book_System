@@ -10,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using JsonSerializer = Newtonsoft.Json.JsonSerializer;
 
 namespace AddressBookSystem
 {
@@ -17,6 +18,7 @@ namespace AddressBookSystem
     {
         const string filepath = @"E:\Bridgelabz\Address_Book_System\Address_Book_System\AddressBook.txt";
         public static List<string> list;
+        private static object records;
 
         //file writes the addressbook in a file
         public static void GetDictionary(Dictionary<string, List<NewMember>> addressbooknames)
@@ -68,15 +70,15 @@ namespace AddressBookSystem
                 var config = new CsvConfiguration(System.Globalization.CultureInfo.InvariantCulture);
                 foreach (var mem in kvp.Value)
                 {
-                    List<NewMember> list = new List<NewMember>();
-                    list.Add(mem);
+                    List<NewMember> list1 = new List<NewMember>();
+                    list1.Add(mem);
                     //Opening file open with append mode
                     using (var stream = File.Open(export, FileMode.Append))
                     using (var writer = new StreamWriter(stream))
                     using (var csvWriter = new CsvWriter(writer, config))
                     {
                         //writes the data next row
-                        csvWriter.WriteRecords(list);
+                        csvWriter.WriteRecords(list1);
                     }
                     //header config for not printing
                     config = new CsvConfiguration(System.Globalization.CultureInfo.InvariantCulture)
